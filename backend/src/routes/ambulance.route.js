@@ -24,7 +24,8 @@ router.get('/nearby', optionalAuth, getNearbyAmbulances);
 router.post('/in-area', optionalAuth, getAmbulancesInArea);
 router.get('/:id', optionalAuth, getAmbulance);
 
-// Protected routes - Driver
+// Protected routes - Driver (UPDATED: Allow drivers to register their own ambulance)
+router.post('/register', protect, authorize('driver', 'operator', 'admin'), registerAmbulance);
 router.get('/driver/my-ambulance', protect, authorize('driver'), getMyAmbulance);
 router.get('/driver/active-requests', protect, authorize('driver'), getActiveRequests);
 router.get('/driver/request-history', protect, authorize('driver'), getRequestHistory);
@@ -36,7 +37,6 @@ router.put('/:id', protect, authorize('driver', 'operator', 'admin'), updateAmbu
 router.get('/:id/stats', protect, authorize('driver', 'operator', 'admin'), getAmbulanceStats);
 
 // Protected routes - Operator, Admin
-router.post('/register', protect, authorize('operator', 'admin'), registerAmbulance);
 router.get('/', protect, authorize('operator', 'admin'), getAllAmbulances);
 router.put('/:id/verify', protect, authorize('operator', 'admin'), verifyAmbulance);
 

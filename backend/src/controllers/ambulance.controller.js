@@ -307,7 +307,7 @@ export const getMyAmbulance = asyncHandler(async (req, res, next) => {
     .populate('driverId', 'name phone email');
 
   if (!ambulance) {
-    return next(new ErrorResponse('No ambulance assigned to this driver', 404));
+    return next(new ErrorResponse('No ambulance assigned to this driver. Please register your ambulance first.', 404));
   }
 
   res.status(200).json({
@@ -511,6 +511,10 @@ export const verifyAmbulance = asyncHandler(async (req, res, next) => {
   }
 
   ambulance.isVerified = true;
+  ambulance.verificationStatus = 'approved';
+  ambulance.verifiedBy = req.user.id;
+  ambulance.verifiedAt = new Date();
+  
   await ambulance.save();
 
   res.status(200).json({

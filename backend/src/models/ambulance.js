@@ -123,6 +123,24 @@ const ambulanceSchema = new mongoose.Schema({
   isActive: {
     type: Boolean,
     default: true
+  },
+  verificationStatus: {
+  type: String,
+  enum: ['pending', 'under_review', 'approved', 'rejected'],
+  default: 'pending'
+  },
+  rejectionReason: {
+  type: String,
+  default: null
+  },
+  verifiedBy: {
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'User',
+  default: null
+  },
+  verifiedAt: {
+  type: Date,
+  default: null
   }
 }, {
   timestamps: true

@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PatientDashboard from './pages/patient/Dashboard';
 import DriverDashboard from './pages/driver/Dashboard';
+import ActiveRide from './pages/driver/ActiveRide';
+import RegisterAmbulance from './pages/driver/RegisterAmbulance';
 import OperatorDashboard from './pages/operator/Dashboard';
 import HospitalDashboard from './pages/hospital/Dashboard';
 import EmergencyRequest from './pages/patient/EmergencyRequest';
@@ -16,6 +18,11 @@ import PrivateBooking from './pages/patient/PrivateBooking';
 import TrackAmbulance from './pages/patient/TrackAmbulance';
 import MyRequests from './pages/patient/MyRequests';
 import Profile from './pages/Profile';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
+import AmbulanceDetails from './pages/driver/AmbulanceDetails';
+import Settings from './pages/Settings';
 
 // Components
 import ProtectedRoute from './components/auth/ProtectedRoute';
@@ -128,6 +135,22 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/driver/register-ambulance"
+            element={
+              <ProtectedRoute allowedRoles={['driver']}>
+                <RegisterAmbulance />
+              </ProtectedRoute>
+          }
+          />
+          <Route
+            path="/driver/active-ride/:requestId"
+            element={
+              <ProtectedRoute allowedRoles={['driver']}>
+                <ActiveRide />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Common Routes */}
           <Route
@@ -138,6 +161,44 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* Admin Routes - Separate from normal user routes */}
+<Route path="/admin/login" element={<AdminLogin />} />
+<Route
+  path="/admin/dashboard"
+  element={
+    <AdminProtectedRoute>
+      <AdminDashboard />
+    </AdminProtectedRoute>
+  }
+/>
+
+{/* Driver Ambulance Routes */}
+<Route
+  path="/driver/register-ambulance"
+  element={
+    <ProtectedRoute allowedRoles={['driver']}>
+      <RegisterAmbulance />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/driver/ambulance-details"
+  element={
+    <ProtectedRoute allowedRoles={['driver']}>
+      <AmbulanceDetails />
+    </ProtectedRoute>
+  }
+/>
+
+{/* Settings Route */}
+<Route
+  path="/settings"
+  element={
+    <ProtectedRoute>
+      <Settings />
+    </ProtectedRoute>
+  }
+/>
 
           {/* 404 */}
           <Route path="*" element={<Navigate to="/" />} />
